@@ -13,7 +13,7 @@ class ListLinked : public List<T> {
 	    ~ListLinked();
 	    void insert(int pos, T e) override;
 	    void append(T e)override;
-	    void preprend (T e)override;
+	    void prepend (T e)override;
 	    T remove (int pos)override;
 	    T get(int pos)override;
 	    int search(T e)override;
@@ -32,14 +32,14 @@ class ListLinked : public List<T> {
 template<typename T>
 ListLinked<T>::ListLinked(){
 	n=0;
-	*first=nullptr;
+	first=nullptr;
 }
 
 template<typename T>
 ListLinked<T>::~ListLinked(){
 	do{
 	Node<T> *aux =first->next;
-	delete *first;
+	delete first;
 	first=aux;
 	n--;
 	}while(n!=0);
@@ -68,7 +68,7 @@ void ListLinked<T>::insert(int pos, T e){
 
 template<typename T>
 void ListLinked<T>::append(T e){
-	Node<T> aux=first;
+	Node<T> *aux=first;
 	while(aux->next!=nullptr){
 		aux=aux->next;
 	}
@@ -77,9 +77,9 @@ void ListLinked<T>::append(T e){
 	return;
 }
 template<typename T>
-void ListLinked<T>::preprend(T e){
-	Node<T> aux=new Node(e,first);
-	*first=aux;
+void ListLinked<T>::prepend(T e){
+	Node<T> *aux=new Node(e,first);
+	first=aux;
 	n++;
 	return;
 }
@@ -92,14 +92,14 @@ T ListLinked<T>:: remove(int pos){
 	if(pos<0 || pos>(size()-1)){
 		throw std::out_of_range("remove fuera de rango");
 	}
-	Node<T> aux=first;
-	Node<T> previo=nullptr;
+	Node<T> *aux=first;
+	Node<T> *previo=nullptr;
 	for(int i=0;i<pos;i++){
 		previo=aux;
 		aux=aux->next;
 	}
 	previo->next=aux->next;
-	T a=aux.data;
+	T a=aux->data;
 	delete aux;
 	return a;
 }
