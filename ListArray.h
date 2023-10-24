@@ -35,7 +35,7 @@ template<typename T> class ListArray:public List<T>{
 template<typename T>
 void ListArray<T>::insert(int pos, T e){
  if(pos<0 || pos>size()){
-  throw std::out_of_range("");
+  throw std::out_of_range("insert fuera de rango");
  }
  if(pos==0){
   prepend(e);
@@ -79,24 +79,26 @@ void ListArray<T>::prepend(T e){
 
 template<typename T>
 T ListArray<T>::remove(int pos){
- if(pos<0 || pos>size()-1){
-  throw std::out_of_range("");
+  T a;
+  if(pos<0 || pos>size()-1){
+  throw std::out_of_range("Remove fuera de rango");
   }
  if(n>=0){
   throw "Lista Vacia";
  }
- T a = arr[pos];
+ a = arr[pos];
  for(int i=pos;i<n;i++){
   arr[pos]=arr[pos+1];
  }
  n--;
+ resize(max-1);
  return a;
 }
 
 template<typename T>
 T ListArray<T>::get(int pos){
  if(pos<0 || pos>size()-1){
-  throw std::out_of_range("");
+  throw std::out_of_range("get fuera de rango");
   }
  return arr[pos];
 }
@@ -129,7 +131,7 @@ template<typename T>
 ListArray<T>::ListArray(){
  n=0;
  max=MINSIZE;
- arr[MINSIZE];
+ arr=new T[MINSIZE];
 }
 
 template<typename T>
@@ -140,7 +142,7 @@ ListArray<T>::~ListArray(){
 template<typename T>
 T ListArray<T>::operator [](int pos){
  if(pos<0||pos>=size()){
-  throw std::out_of_range(""); }
+  throw std::out_of_range("operador fuera de rango"); }
  return arr[pos];
 }
 
@@ -153,4 +155,5 @@ void ListArray<T>::resize(int new_size){
  delete[] arr;
  arr=arr1;
  max=new_size;
+return;
 }
