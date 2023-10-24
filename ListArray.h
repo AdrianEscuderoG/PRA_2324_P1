@@ -49,8 +49,8 @@ void ListArray<T>::insert(int pos, T e){
    arr[i]=arr[i-1];
   }
   arr[pos]=e;
- }
  n++;
+ }
  return;
 }
 
@@ -81,14 +81,14 @@ template<typename T>
 T ListArray<T>::remove(int pos){
   T a;
   if(pos<0 || pos>size()-1){
-  throw std::out_of_range("Remove fuera de rango");
+ 	 throw std::out_of_range("Remove fuera de rango");
   }
- if(n>=0){
-  throw "Lista Vacia";
+ if(n<=0){
+ 	 throw "Lista Vacia";
  }
  a = arr[pos];
  for(int i=pos;i<n;i++){
-  arr[pos]=arr[pos+1];
+  arr[i]=arr[i+1];
  }
  n--;
  resize(max-1);
@@ -124,7 +124,7 @@ bool ListArray<T>::empty(){
 
 template<typename T>
 int ListArray<T>::size(){
- return max;
+ return n;
 }
 
 template<typename T>

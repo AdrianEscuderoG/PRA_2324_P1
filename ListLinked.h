@@ -21,10 +21,13 @@ class ListLinked : public List<T> {
 	    int size()override;
 	    T operator [] (int pos);
 	    friend std::ostream& operator<<(std::ostream &out, const ListLinked<T> &list){
-	    	do{
-			out<<list.data<<" ";
-			list=list->next;
-		}while(list->next!=nullptr);
+		Node<T> *aux= list.first;
+		out<<"List = [";
+		while(aux!=nullptr){
+			out<<aux->data<<" ";
+			aux=aux->next;
+		}
+		out<<"]";
 		return out;
 	    }
 };
@@ -38,10 +41,10 @@ ListLinked<T>::ListLinked(){
 template<typename T>
 ListLinked<T>::~ListLinked(){
 	do{
-	Node<T> *aux =first->next;
-	delete first;
-	first=aux;
-	n--;
+		Node<T> *aux =first->next;
+		delete first;
+		first=aux;
+		n--;
 	}while(n!=0);
 }
 template<typename T>
@@ -61,8 +64,8 @@ void ListLinked<T>::insert(int pos, T e){
 			aux=aux->next;
 	       	}
 		previo->next= new Node(e,aux);
+		n++;
 	}
-	n++;
 	return;
 }
 
@@ -93,12 +96,17 @@ T ListLinked<T>:: remove(int pos){
 		throw std::out_of_range("remove fuera de rango");
 	}
 	Node<T> *aux=first;
-	Node<T> *previo=nullptr;
-	for(int i=0;i<pos;i++){
-		previo=aux;
-		aux=aux->next;
+	if(pos==0){
+		first=first->next;
+	}else{
+		Node<T> *previo=nullptr;
+		for(int i=0;i<pos;i++){
+			previo=aux;
+			aux=aux->next;
+		}
+		previo->next=aux->next;
 	}
-	previo->next=aux->next;
+	n--;
 	T a=aux->data;
 	delete aux;
 	return a;
