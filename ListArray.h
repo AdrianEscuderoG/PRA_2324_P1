@@ -1,5 +1,6 @@
 #include "List.h"
 #include <iostream>
+#include <ostream>
 template<typename T> class ListArray:public List<T>{
  private:
   T* arr;
@@ -19,7 +20,14 @@ template<typename T> class ListArray:public List<T>{
   ListArray();
   ~ListArray();
   T operator[](int pos);
-  friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list);
+  friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list){
+        for(int i=0;i<list.n;i++){
+              out<<list.arr[i]<<" ";
+        }
+        return out;
+};
+
+
  private:
   void resize(int new_size);
   
@@ -27,7 +35,7 @@ template<typename T> class ListArray:public List<T>{
 template<typename T>
 void ListArray<T>::insert(int pos, T e){
  if(pos<0 || pos>size()){
-  throw std::out_of_range();
+  throw std::out_of_range("");
  }
  if(pos==0){
   prepend(e);
@@ -42,6 +50,7 @@ void ListArray<T>::insert(int pos, T e){
   }
   arr[pos]=e;
  }
+ n++;
  return;
 }
 
@@ -51,6 +60,7 @@ void ListArray<T>::append(T e){
   resize(max+1);
  }
  arr[n]=e;
+ n++;
  return;
 }
 
@@ -63,25 +73,30 @@ void ListArray<T>::prepend(T e){
   arr[i]=arr[i-1];
  }
  arr[0]=e;
+ n++;
  return;
 }
 
 template<typename T>
 T ListArray<T>::remove(int pos){
  if(pos<0 || pos>size()-1){
-  throw std::out_of_range();
+  throw std::out_of_range("");
   }
+ if(n>=0){
+  throw "Lista Vacia";
+ }
  T a = arr[pos];
  for(int i=pos;i<n;i++){
   arr[pos]=arr[pos+1];
  }
+ n--;
  return a;
 }
 
 template<typename T>
 T ListArray<T>::get(int pos){
  if(pos<0 || pos>size()-1){
-  throw std::out_of_range();
+  throw std::out_of_range("");
   }
  return arr[pos];
 }
@@ -125,19 +140,17 @@ ListArray<T>::~ListArray(){
 template<typename T>
 T ListArray<T>::operator [](int pos){
  if(pos<0||pos>=size()){
-  throw std::out_of_range();
- }
+  throw std::out_of_range(""); }
+ return arr[pos];
 }
 
 template<typename T>
 void ListArray<T>::resize(int new_size){
- T arr1= new T[new_size];
+ T *arr1= new T[new_size];
  for(int i=0;i<n;i++){
   arr1[i]=arr[i];
  }
- *arr=*arr1;
  delete[] arr;
+ arr=arr1;
  max=new_size;
 }
-
-
