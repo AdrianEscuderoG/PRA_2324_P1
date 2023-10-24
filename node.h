@@ -10,9 +10,7 @@ class Node {
 	this->next=next;
 	}
 	friend std::ostream& operator <<(std::ostream &out, const Node<T> &node){
-		do{
-			out<<node.data<<" ";
-		}while(node->next!=nullptr);
+		out<<node.data;
 		return out;
 	}
     
