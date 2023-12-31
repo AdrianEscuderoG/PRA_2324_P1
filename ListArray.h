@@ -17,6 +17,7 @@ template<typename T> class ListArray:public List<T>{
   int search(T e)override;
   bool empty()override;
   int size()override;
+  void invert_list() override;
   ListArray();
   ~ListArray();
   T operator[](int pos);
@@ -33,7 +34,7 @@ template<typename T> class ListArray:public List<T>{
   
 };
 template<typename T>
-void ListArray<T>::insert(int pos, T e){
+void ListArray<T>::insert(int pos, T e){//Si es en la primera, hace prepend. Si es la última, hace append. Si es entremedias, desplaza hacia delante e inserta
  if(pos<0 || pos>size()){
   throw std::out_of_range("insert fuera de rango");
  }
@@ -55,7 +56,7 @@ void ListArray<T>::insert(int pos, T e){
 }
 
 template<typename T>
-void ListArray<T>::append(T e){
+void ListArray<T>::append(T e){//resize y al final
  if(n==max){
   resize(max+1);
  }
@@ -65,7 +66,7 @@ void ListArray<T>::append(T e){
 }
 
 template<typename T>
-void ListArray<T>::prepend(T e){
+void ListArray<T>::prepend(T e){//Desplaza e inserta
  if(n==max){
   resize(max+1);
  }
@@ -78,7 +79,7 @@ void ListArray<T>::prepend(T e){
 }
 
 template<typename T>
-T ListArray<T>::remove(int pos){
+T ListArray<T>::remove(int pos){//elimina desplazando sobre el elemento y resize
   T a;
   if(pos<0 || pos>size()-1){
  	 throw std::out_of_range("Remove fuera de rango");
@@ -157,3 +158,14 @@ void ListArray<T>::resize(int new_size){
  max=new_size;
 return;
 }
+template<typename T>
+void ListArray<T>::invert_list(){
+T *arr1= new T[max];
+ for(int i=0;i<n;i++){
+  arr1[i]=arr[n-1-i];
+ }
+ delete[] arr;
+ arr=arr1;
+return;
+}
+

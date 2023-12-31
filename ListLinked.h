@@ -1,4 +1,4 @@
-#include <ostream>
+#include <iostream>
 #include "List.h"
 #include "Node.h"
 
@@ -19,6 +19,7 @@ class ListLinked : public List<T> {
 	    int search(T e)override;
 	    bool empty()override;
 	    int size()override;
+	    void invert_list()override;
 	    T operator [] (int pos);
 	    friend std::ostream& operator<<(std::ostream &out, const ListLinked<T> &list){
 		Node<T> *aux= list.first;
@@ -40,15 +41,16 @@ ListLinked<T>::ListLinked(){
 
 template<typename T>
 ListLinked<T>::~ListLinked(){
-	do{
-		Node<T> *aux =first->next;
-		delete first;
-		first=aux;
-		n--;
-	}while(n!=0);
+  while(first!=nullptr){
+    Node<T> *aux =first->next;
+    delete first;
+    first=aux;
+    n--;
+  }
+	std::cout<<"Lista borrada"<<std::endl;
 }
 template<typename T>
-void ListLinked<T>::insert(int pos, T e){
+void ListLinked<T>::insert(int pos, T e){//prepend, append o inserta mediante previo y aux
 	if(pos<0 || pos>size()){
 		throw std::out_of_range("insert fuera de rango");
 	}
@@ -63,14 +65,14 @@ void ListLinked<T>::insert(int pos, T e){
 			previo=aux;
 			aux=aux->next;
 	       	}
-		previo->next= new Node(e,aux);
+		previo->next= new Node(e,aux);//el nuevo es aquel al que apunta el previo y q apunta al aux
 		n++;
 	}
 	return;
 }
 
 template<typename T>
-void ListLinked<T>::append(T e){
+void ListLinked<T>::append(T e){//Llega al final y crea un nuevo nodo
 	Node<T> *aux=first;
 	while(aux->next!=nullptr){
 		aux=aux->next;
@@ -80,7 +82,7 @@ void ListLinked<T>::append(T e){
 	return;
 }
 template<typename T>
-void ListLinked<T>::prepend(T e){
+void ListLinked<T>::prepend(T e){//Crea apuntado al first
 	Node<T> *aux=new Node(e,first);
 	first=aux;
 	n++;
@@ -131,13 +133,13 @@ template<typename T>
 int ListLinked<T>::search(T e){
 	Node <T> *aux= first;
 	int i=0;
-	do{
+	while(aux!=nullptr){
 	if(aux->data==e){
 		return i;
 	}
 	aux=aux->next;
 	i++;
-	}while(aux!=nullptr);
+	}
 	return -1;
 } 
 template<typename T>
@@ -163,4 +165,27 @@ T ListLinked<T>::operator [](int pos){
                 aux=aux->next;
         }
         return aux->data; 
+}
+
+template<typename T>
+void ListLinked<T>::invert_list(){
+	if(n<=1){
+		return;
+	}
+	Node <T> *aux=first;
+	T cambio[n];
+	int i=0;
+	while(aux!=nullptr){
+		cambio[i]=aux->data;
+		aux=aux->next;
+		i++;
+	}
+	aux=first;
+	i=n-1;
+	while(aux!=nullptr){
+                aux->data=cambio[i];
+                aux=aux->next;
+                i--;
+        }
+	return;
 }
